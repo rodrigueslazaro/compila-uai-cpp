@@ -14,10 +14,11 @@ void AnaliseSinSem::botaErro(string msg, tipo_erro err, token_encontrado t) {
 }
 
 void AnaliseSinSem::mostrarErros() {
+    string tipos[2] = {"sintático", "semântico"};
     if (erros.size() > 0) {
         cout << "!!! " << erros.size() << " !!! ERROS ENCONTRADOS!" << endl; 
         for (auto e : erros) {
-            cout << "Erro: linha " << e.linha << endl;
+            cout << "Erro " << tipos[e.tipo] << ": linha " << e.linha << endl;
             cout << "Problema: " << e.msg << endl;
             cout << "Token encontrado: " << e.t.key << endl << endl;
         }

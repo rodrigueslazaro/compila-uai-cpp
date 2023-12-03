@@ -1,0 +1,26 @@
+uai: |
+
+queijo: num ~
+pamonha: text ~
+
+bota: -Bem vindo ao quinhentizador!- ~
+bota: -Escolha um numero menor que 500- ~
+
+cata: num ~
+
+caso: num maior-que$ 500 |
+    bota: -Colocou um numero maior que quinhentos né espertinho? Agora vai começar do zero!- ~
+    faiz: 500 rodada$ |
+	    num <> num mais$ 1 ~
+    |
+| otos-caso-se: num menor-que$ 500 |
+    num <> 500 menos$ num ~
+    faiz: num rodada$ |
+        bota: num ~
+	    num <> num mais$ 1 ~
+    |
+|
+
+bota: -Parabéns, você quinhentizou!- ~
+
+|

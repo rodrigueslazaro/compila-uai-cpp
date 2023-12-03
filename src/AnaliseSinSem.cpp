@@ -44,17 +44,27 @@ void AnaliseSinSem::consome(string t, bool suprimir = 0) {
             botaErro("erro de sintaxe", errsin, tokenAtual); 
 }
 
+bool AnaliseSinSem::naoExiste(string v) {
+    for (auto i : variaveis)
+        if (i.id == v)
+            return 0;
+    return 1;    
+}
+
 void AnaliseSinSem::declaracoes() {
     while(var_type()) {
         novoid();
         endline();
-        variaveis.push_back(novavar);
     }
 }
 
 void AnaliseSinSem::novoid() {
     if (atualIgual("id")) {
         novavar.id = tokenAtual.encontrado;
+        if (naoExiste(novavar.id))
+            variaveis.push_back(novavar);
+        else 
+            botaErro("variavel ja existe", errsem, tokenAtual); 
         consome("id");
     } else
         botaErro("esperava-se um identificador", errsin, tokenAtual);
@@ -116,7 +126,10 @@ void AnaliseSinSem::atribuicao() {
     consome("id");
     if (atualIgual("<>")) {
         consome("<>");
-        conteudo();
+        if (novavar.tipo == inteiro)
+            conteudo();
+        else
+            literal();
         endline();
     } else
         botaErro("esperava-se um <>", errsin, tokenAtual);
@@ -130,7 +143,7 @@ void AnaliseSinSem::endline() {
 }
 
 void AnaliseSinSem::conteudo() {
-    terminal();
+    terminalnum();
     Elinha();
 }
 
@@ -150,15 +163,13 @@ bool AnaliseSinSem::terminal() {
 
 bool AnaliseSinSem::terminalatrib() {
     if (atualIgual("num")) {
-        if (novavar.tipo == inteiro)
-            consome("num");
-        else
-            botaErro("tentativa de atribuir valor textual em variavel numérica", errsem, tokenAtual);
-    } else if (atualIgual("literal"))  {
-        if (novavar.tipo == texto)
-            consome("literal");
-        else
+        if (novavar.tipo != inteiro)
             botaErro("tentativa de atribuir valor inteiro em variavel textual", errsem, tokenAtual);
+        consome("num");
+    } else if (atualIgual("literal"))  {
+        if (novavar.tipo != texto)
+            botaErro("tentativa de atribuir valor textual em variavel inteira", errsem, tokenAtual);
+        consome("literal");
     } else if (atualIgual("id")) {
         if (novavar.tipo == getVarPeloID(tokenAtual.encontrado).tipo)
             id();
@@ -166,6 +177,8 @@ bool AnaliseSinSem::terminalatrib() {
             botaErro("tentativa de atribuir valor de variavel inteira em variavel textual", errsem, tokenAtual);
         else if (novavar.tipo == texto and getVarPeloID(tokenAtual.encontrado).tipo == inteiro)
             botaErro("tentativa de atribuir valor de variavel textual em variavel inteira", errsem, tokenAtual);
+        else 
+            id();
     } else {
         botaErro("esperava-se um valor", errsin, tokenAtual);
         return 0;
@@ -173,11 +186,23 @@ bool AnaliseSinSem::terminalatrib() {
     return 1;
 }
 
-void AnaliseSinSem:: Elinha() {
+void AnaliseSinSem::Elinha() {
     if (operador()) {
-        terminal();
+        terminalnum();
         Elinha();
     } 
+}
+
+void AnaliseSinSem::terminalnum() {
+    if (atualIgual("num")) {
+        consome("num");
+    } else if (atualIgual("id")) {
+        if (getVarPeloID(tokenAtual.encontrado).tipo != inteiro)
+            botaErro("valor textual encontrado em expressão aritmética", errsem, tokenAtual);
+        id();
+    } else {
+        botaErro("esperava-se um valor", errsin, tokenAtual);
+    }
 }
 
 bool AnaliseSinSem::operador() {
@@ -243,8 +268,11 @@ void AnaliseSinSem::expressao() {
 bool AnaliseSinSem::terminalLogico() {
     if (atualIgual("num"))
         consome("num");
-    else if (atualIgual("id"))
+    else if (atualIgual("id")) {
+        if (getVarPeloID(tokenAtual.encontrado).tipo != inteiro)
+            botaErro("a função faiz espera uma variavel numerica, mas foi encontrada um varivel textual", errsem, tokenAtual);
         id();
+    }
     else if (atualIgual("trem-bao"))
         consome("trem-baum");
     else if (atualIgual("trem-ruim"))
@@ -310,9 +338,11 @@ bool AnaliseSinSem::operadorLogico() {
 
 void AnaliseSinSem::faiz() {
     consome("faiz");
-    if (atualIgual("id"))
+    if (atualIgual("id")) {
+        if (getVarPeloID(tokenAtual.encontrado).tipo != inteiro)
+            botaErro("a função faiz espera uma variavel numerica, mas foi encontrada um varivel textual", errsem, tokenAtual);
         id();
-    else if (atualIgual("num"))
+    } else if (atualIgual("num"))
         consome("num");
     consome("rodada");
     pipe();
@@ -327,8 +357,11 @@ void AnaliseSinSem::cata() {
 }
 
 void AnaliseSinSem::id() {
-    if (atualIgual("id"))
+    if (atualIgual("id")) {
+        if (naoExiste(tokenAtual.encontrado))
+            botaErro("variavel utilizada nao foi declarada", errsem, tokenAtual);
         consome("id");
+    }
     else
         botaErro("esperava-se um identificador", errsin, tokenAtual);
 }

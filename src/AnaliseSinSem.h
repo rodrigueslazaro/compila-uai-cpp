@@ -49,6 +49,7 @@ private:
     void consomeQualquer(string alvo);
     void consome(string t, bool suprimir);
     variavel getVarPeloID(string id);
+    bool naoExiste(string v);
     vector<erro> erros;
     vector<variavel> variaveis;
     variavel novavar;
@@ -62,6 +63,7 @@ private:
     void endline();
     void conteudo();
     bool terminal();
+    void terminalnum();
     bool terminalatrib();
     void Elinha();
     bool operador();

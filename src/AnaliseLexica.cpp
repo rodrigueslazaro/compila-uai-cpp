@@ -82,7 +82,7 @@ token AnaliseLexica::getTokenPelaChave(string chave) {
 }
 
 token AnaliseLexica::getTokenPeloID(int id) {
-	if (id < tokens.size())
+	if (id < static_cast<int>(tokens.size()))
 		return tokens[id];
 	token errtoken;
 	errtoken.id = 0;

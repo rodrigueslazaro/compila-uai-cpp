@@ -8,7 +8,7 @@ bota: -Escolha um numero menor que 500- ~
 
 cata: num ~
 
-caso: num maior-que$ 500 |
+caso: num maior-que$ 500 e$ num menor-que$ 1000 |
     bota: -Colocou um numero maior que quinhentos né espertinho? Agora vai começar do zero!- ~
     faiz: 500 rodada$ |
 	    num <> num mais$ 1 ~

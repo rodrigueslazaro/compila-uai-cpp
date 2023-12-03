@@ -1,6 +1,7 @@
-#include "Compilador.h"
 #include <iostream>
+#include "Compilador.h"
 #include "AnaliseLexica.h"
+#include "AnaliseSinSem.h"
 
 int Compilador::fazerAnaliseLexica() {
     AnaliseLexica analisador_lexico = AnaliseLexica("teste.uai");
@@ -19,3 +20,8 @@ int Compilador::fazerAnaliseLexica() {
     return 1;
 }
 
+void Compilador::compilar() {
+    AnaliseSinSem analisador = AnaliseSinSem();
+    analisador.analisar();
+    analisador.mostrarErros();
+}

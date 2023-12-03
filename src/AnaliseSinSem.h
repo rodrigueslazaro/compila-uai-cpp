@@ -23,19 +23,36 @@ typedef struct {
     token t;
 } erro;
 
+typedef enum {
+    inteiro,
+    texto
+} tipo_var;
+
+typedef struct {
+    string id;
+    tipo_var tipo;
+    int ivalor;
+    string svalor;
+} variavel;
+
 class AnaliseSinSem {
 public:
     AnaliseSinSem();
     ~AnaliseSinSem(){};
+    void analisar();
+    void mostrarErros();
 private:
     token_encontrado tokenAtual;
     AnaliseLexica lexico;
     void botaErro(string msg, tipo_erro err, token_encontrado t);
-    void mostraErros();
     bool atualIgual(string alvo);
     void consomeQualquer(string alvo);
-    void consome(string t, bool suprimir = 0);
+    void consome(string t, bool suprimir);
+    variavel getVarPeloID(string id);
     vector<erro> erros;
+    vector<variavel> variaveis;
+    variavel novavar;
+    variavel varatrib;
 
     void declaracoes();
     bool var_type();
@@ -44,9 +61,10 @@ private:
     void atribuicao();
     void endline();
     void conteudo();
-    void terminal();
+    bool terminal();
+    bool terminalatrib();
     void Elinha();
-    void operado();
+    bool operador();
     void caso();
     void otoscaso();
     bool pipe();
@@ -54,11 +72,13 @@ private:
     bool terminalLogico();
     void Mlinha();
     bool operadorEOu();
-    void LLinha();
+    void Llinha();
     bool operadorLogico();
     void faiz();
     void cata();
     void id();
+    void novoid();
+    void literal();
     void bota();
     void uai();
 };

@@ -4,10 +4,5 @@
 
 int main() {
     Compilador compilador = Compilador();
-
-    if (compilador.fazerAnaliseLexica())
-        cout << "Análise léxica concluida com sucesso!" << endl;
-    else 
-        cout << "Análise léxica falhou!!" << endl;
-    
+    compilador.compilar();
 }

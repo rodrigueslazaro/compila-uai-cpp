@@ -7,7 +7,6 @@ public:
     Compilador(){};
     ~Compilador(){};
     int fazerAnaliseLexica();
-    int fazerAnalisesSintaticaESemantica();
-
+    void compilar();
 private:
 };

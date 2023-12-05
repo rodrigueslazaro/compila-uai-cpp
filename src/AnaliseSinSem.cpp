@@ -2,7 +2,7 @@
 #include <iostream>
 
 AnaliseSinSem::AnaliseSinSem()
-    :lexico("teste.uai") {};
+    :lexico("blank") {};
 
 void AnaliseSinSem::botaErro(string msg, tipo_erro err, token_encontrado t) {
     erro novoerro;
@@ -368,8 +368,9 @@ void AnaliseSinSem::uai() {
         botaErro("esperava-se um 'uai', uai!", errsin, tokenAtual);
 }
 
-void AnaliseSinSem::analisar() {
+void AnaliseSinSem::analisar(string arquivo) {
     lexico.carregarDicionarioDeTokens();
+    lexico.setArquivo(arquivo);
     if (not lexico.abrirArquivo()) {
         cout << "Arquivo não encontrado!" << endl;
     }

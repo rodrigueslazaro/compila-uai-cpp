@@ -2,15 +2,6 @@
 #include "AnaliseLexica.h"
 #include "Token.h"
 
-// tabelaSimbolos = {}
-// arquivo_tabela = None
-// comentario = True
-// tokenAtual = None
-// arquivo = None
-// buffer = ''
-// linha = [0]
-// endDeclaracoes = False
-
 typedef enum {
     errsin,
     errsem
@@ -39,7 +30,7 @@ class AnaliseSinSem {
 public:
     AnaliseSinSem();
     ~AnaliseSinSem(){};
-    void analisar();
+    void analisar(string arquivo);
     void mostrarErros();
 private:
     token_encontrado tokenAtual;

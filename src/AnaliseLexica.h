@@ -14,6 +14,7 @@ public:
     token_encontrado getToken();
     bool abrirArquivo();
     token getTokenPeloID(int id);
+    void setArquivo(string nome) { nomeArquivo = nome; }
 private:
     void getChar();
     token_encontrado retorno(string chave, string encontrado);

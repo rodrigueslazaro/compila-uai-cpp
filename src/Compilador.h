@@ -4,9 +4,10 @@
 
 class Compilador {
 public:
-    Compilador(){};
+    Compilador(string arquivo);
     ~Compilador(){};
     int fazerAnaliseLexica();
     void compilar();
 private:
+    string arquivo;
 };

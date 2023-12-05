@@ -3,6 +3,9 @@
 #include "AnaliseLexica.h"
 #include "AnaliseSinSem.h"
 
+Compilador::Compilador(string arquivo)
+    :arquivo(arquivo) {};
+
 int Compilador::fazerAnaliseLexica() {
     AnaliseLexica analisador_lexico = AnaliseLexica("teste.uai");
     analisador_lexico.carregarDicionarioDeTokens();
@@ -22,6 +25,6 @@ int Compilador::fazerAnaliseLexica() {
 
 void Compilador::compilar() {
     AnaliseSinSem analisador = AnaliseSinSem();
-    analisador.analisar();
+    analisador.analisar(arquivo);
     analisador.mostrarErros();
 }

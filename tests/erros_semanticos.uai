@@ -1,0 +1,21 @@
+uai: |
+
+queijo: num ~
+pamonha: num ~
+pamonha: text ~
+
+caso: num menor-que$ 20 |
+    bota: texto ~
+|
+
+faiz: text rodada$ |
+    cata: text ~
+    bota: text ~
+|
+
+num <> text ~
+
+num <> 20 mais$ text ~
+
+
+|

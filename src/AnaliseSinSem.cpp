@@ -84,7 +84,7 @@ bool AnaliseSinSem::var_type() {
     return 0;
 }
 
-void AnaliseSinSem:: comandos() {
+void AnaliseSinSem::comandos() {
     if (atualIgual("id") or
         atualIgual("caso") or
         atualIgual("faiz") or
@@ -95,7 +95,7 @@ void AnaliseSinSem:: comandos() {
     }
 }
 
-void AnaliseSinSem:: comando() {
+void AnaliseSinSem::comando() {
     if (atualIgual("id"))
         atribuicao();
     else if (atualIgual("caso"))
@@ -127,10 +127,13 @@ void AnaliseSinSem::atribuicao() {
     consome("id");
     if (atualIgual("<>")) {
         consome("<>");
-        if (novavar.tipo == inteiro)
+        if (novavar.tipo == inteiro) {
             conteudo();
-        else
+            consomeQualquer("~");
+        } else {
             literal();
+            consomeQualquer("~");
+        }
         endline();
     } else
         botaErro("esperava-se um <>", errsin, tokenAtual);
@@ -162,31 +165,6 @@ bool AnaliseSinSem::terminal() {
     return 1;
 }
 
-bool AnaliseSinSem::terminalatrib() {
-    if (atualIgual("num")) {
-        if (novavar.tipo != inteiro)
-            botaErro("tentativa de atribuir valor inteiro em variavel textual", errsem, tokenAtual);
-        consome("num");
-    } else if (atualIgual("literal"))  {
-        if (novavar.tipo != texto)
-            botaErro("tentativa de atribuir valor textual em variavel inteira", errsem, tokenAtual);
-        consome("literal");
-    } else if (atualIgual("id")) {
-        if (novavar.tipo == getVarPeloID(tokenAtual.encontrado).tipo)
-            id();
-        else if (novavar.tipo == inteiro and getVarPeloID(tokenAtual.encontrado).tipo == texto)
-            botaErro("tentativa de atribuir valor de variavel inteira em variavel textual", errsem, tokenAtual);
-        else if (novavar.tipo == texto and getVarPeloID(tokenAtual.encontrado).tipo == inteiro)
-            botaErro("tentativa de atribuir valor de variavel textual em variavel inteira", errsem, tokenAtual);
-        else 
-            id();
-    } else {
-        botaErro("esperava-se um valor", errsin, tokenAtual);
-        return 0;
-    }
-    return 1;
-}
-
 void AnaliseSinSem::Elinha() {
     if (operador()) {
         terminalnum();
@@ -202,7 +180,7 @@ void AnaliseSinSem::terminalnum() {
             botaErro("valor textual encontrado em expressão aritmética", errsem, tokenAtual);
         id();
     } else {
-        botaErro("esperava-se um valor", errsin, tokenAtual);
+        botaErro("esperava-se um valor numérico", errsin, tokenAtual);
     }
 }
 
@@ -256,7 +234,7 @@ bool AnaliseSinSem::pipe() {
         consome("|");
         return 1;
     } else {
-        botaErro("esperave-se um |", errsin, tokenAtual);
+        botaErro("esperava-se um |", errsin, tokenAtual);
         return 0;
     }
 }
